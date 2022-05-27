@@ -18,7 +18,6 @@ to bundle your application
 ### Hexlet tests and linter status:
 
 [![Actions Status](https://github.com/MariaKorchagina/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/MariaKorchagina/frontend-project-lvl3/actions)
-[![github-actions-lint](https://github.com/MariaKorchagina/frontend-project-lvl3/actions/workflows/nodejs.yml/badge.svg)](https://github.com/MariaKorchagina/frontend-project-lvl3/actions)
 
 <a href="https://github.com/MariaKorchagina/frontend-project-lvl3/actions/workflows/nodejs.yml"><img src="https://github.com/MariaKorchagina/frontend-project-lvl3/actions/workflows/nodejs.yml/badge.svg" alt="Node CI" style="max-width: 100%;"></a>
 
