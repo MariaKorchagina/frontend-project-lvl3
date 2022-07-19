@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     </form>
-                    <p class="mt-2 mb-0 text-muted">Example: http://feeds.bbci.co.uk/news/world/rss.xml</p>
+                    <p class="mt-2 mb-0 text-secondary">Example: https://ru.hexlet.io/lessons.rss, https://www.nasa.gov/rss/dyn/educationnews.rss</p>
                     <p class="feedback m-0 position-absolute small text-danger"></p>
                 </div>
             </div>
@@ -57,20 +57,4 @@
     </main>
     <script src="index.js"></script>
 </body>
-
-<script>
-    if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-            navigator.serviceWorker
-                .register("service-worker.js")
-                .then((registration) => {
-                    console.log("Service Worker registered: ", registration);
-                })
-                .catch((registrationError) => {
-                    console.error("Service Worker registration failed: ", registrationError);
-                });
-        });
-    }
-</script>
-
 </html>

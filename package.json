@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "RSS aggregator",
+  "description": "My webpack project",
   "main": "./src/app.js",
   "type": "module",
   "private": true,
@@ -17,37 +17,38 @@
     "type": "git",
     "url": "git+https://github.com/MariaKorchagina/frontend-project-lvl3.git"
   },
-  "author": "Maria Korchagina",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MariaKorchagina/frontend-project-lvl3/issues"
   },
   "homepage": "https://github.com/MariaKorchagina/frontend-project-lvl3#readme",
-  "keywords": [],
   "devDependencies": {
-    "@webpack-cli/generators": "^0.1.2",
+    "@webpack-cli/generators": "^2.5.0",
     "css-loader": "^6.7.1",
-    "eslint": "^8.11.0",
+    "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.25.2",
     "html-webpack-plugin": "^5.5.0",
-    "postcss-loader": "^6.2.1",
-    "prettier": "^2.6.0",
-    "sass": "^1.49.9",
-    "sass-loader": "^12.6.0",
+    "postcss": "^8.4.14",
+    "postcss-loader": "^7.0.1",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3",
     "workbox-webpack-plugin": "^6.5.3"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.4",
-    "axios": "^0.26.1",
+    "@popperjs/core": "^2.11.5",
+    "axios": "^0.27.2",
     "bootstrap": "^5.2.0-beta1",
-    "i18next": "^21.6.14",
+    "i18next": "^21.8.13",
     "lodash": "^4.17.21",
-    "on-change": "^4.0.0",
+    "on-change": "^4.0.1",
+    "prettier": "^2.7.1",
     "yup": "^0.32.11"
   }
 }
