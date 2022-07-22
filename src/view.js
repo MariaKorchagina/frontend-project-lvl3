@@ -1,6 +1,6 @@
 import onChange from 'on-change';
 import i18next from 'i18next';
-import en from './locales/en.js';
+import resources from './locales/index.js';
 
 const elements = {
   form: document.querySelector('form'),
@@ -18,11 +18,10 @@ const elements = {
 
 const render = (state) => (path, value) => {
   const i18nInstance = i18next.createInstance();
-
   i18nInstance.init({
     lng: 'en',
-    debug: false,
-    resources: { en },
+    debug: true,
+    resources,
   });
 
   switch (path) {
@@ -34,7 +33,7 @@ const render = (state) => (path, value) => {
             addButton.disabled = true;
             inputField.readOnly = true;
             break;
-          case 'error':
+          case 'failing':
             addButton.disabled = false;
             inputField.removeAttribute('readonly');
             break;
@@ -144,7 +143,7 @@ const render = (state) => (path, value) => {
 
           const button = document.createElement('button');
           button.setAttribute('type', 'button');
-          button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+          button.classList.add('btn', 'btn-outline-info', 'btn-sm');
           button.dataset.id = post.id;
           button.dataset.bsToggle = 'modal';
           button.dataset.bsTarget = '#modal';
@@ -163,17 +162,14 @@ const render = (state) => (path, value) => {
     case 'postsHandler.posts':
       const getPostsReader = (postsHandler) => {
         postsHandler.forEach((post) => {
-          const postEl = document.querySelector(`a[data-id="${post.id}"]`);
+          const postItem = document.querySelector(`a[data-id="${post.id}"]`);
           switch (post.status) {
-            case 'unread':
-              postEl.classList.add('fw-bold');
-              break;
-
             case 'read':
-              postEl.classList.remove('fw-bold');
-              postEl.classList.add('fw-normal');
+              postItem.classList.add('fw-normal');
               break;
-
+            case 'unread':
+              postItem.classList.add('fw-normal');
+              break;
             default:
               throw new Error(`Unknown status: ${post.status}`);
           }
@@ -183,7 +179,7 @@ const render = (state) => (path, value) => {
       break;
 
     case 'postsHandler.readModal':
-      const renderModal = (postId, state, elements) => {
+      const getPostsReaderModal = (postId, state, elements) => {
         const { modal } = elements;
         const activePost = state.posts.find((post) => post.id === postId.toString());
 
@@ -192,7 +188,7 @@ const render = (state) => (path, value) => {
         modal.readMoreButton.setAttribute('href', activePost.url);
       };
 
-      renderModal(value, state, elements);
+      getPostsReaderModal(value, state, elements);
       break;
 
     default:

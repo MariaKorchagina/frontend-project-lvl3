@@ -1,9 +1,7 @@
 import * as yup from 'yup';
-import axios from 'axios';
-// import _ from 'lodash';
 import watcher from './view.js';
 import parse from './parser.js';
-
+import axios from 'axios';
 
 let id = (function () {
   let num = 0;
@@ -15,7 +13,7 @@ let id = (function () {
 }
   ());
 
-export default () => {
+const fillContent = () => {
   const state = {
     form: {
       error: '',
@@ -25,7 +23,7 @@ export default () => {
     posts: [],
     postsHandler: {
       posts: [],
-      modalPostId: '',
+      readModal: '',
     },
   };
 
@@ -38,100 +36,71 @@ export default () => {
     },
   });
 
-  const watchedState = watcher(state);
+  const viewState = watcher(state);
+  
+  const getAddedPost = (post, idFeed) => {
+    const idPost = id();
+    viewState.posts.push({ ...post, id: idPost, idFeed });
+    viewState.postsHandler.posts.push({ id: idPost, status: 'unread' });
+  };
 
-  const addListenersOnPosts = () => {
-    const postContainerEl = document.querySelector('.posts');
-    postContainerEl.addEventListener('click', (event) => {
-      const postId = event.target.dataset.id;
-      const postsUiState = watchedState.postsHandler.posts.map((post) => (post.id === postId ? { id: postId, status: 'read' } : post));
-      watchedState.postsHandler.posts = postsUiState;
-      if (event.target.dataset.bsToggle === 'modal') {
-        watchedState.postsHandler.readModal = postId;
+  const getReadedPosts = () => {
+    document.querySelector('.posts').addEventListener('click', (event) => {
+      const idPost = event.target.dataset;
+      if (idPost.bsToggle === 'modal') {
+        viewState.postsHandler.readModal = idPost.id;
       }
     });
   };
 
-  addListenersOnPosts();
+  getReadedPosts();
 
-  const addPostInState = (post, feedId) => {
-    const postId = id();
-
-    watchedState.posts.push({ ...post, id: postId, feedId });
-    watchedState.postsHandler.posts.push({ id: postId, status: 'unread' });
-  };
-
-  const addNewPosts = (url) => axios
-    .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
-    .then((response) => {
-      const { posts } = parse(response.data.contents, url);
-
-      const feedId = watchedState
-        .feeds
-        .find((feed) => feed.url === url)
-        .id;
-
-      posts.forEach((post) => {
-        if (!watchedState.posts.some((watchedPost) => watchedPost.url === post.url)) {
-          addPostInState(post, feedId);
-        }
-      });
-    });
-
-  const formEl = document.querySelector('form');
-
-  formEl.addEventListener('submit', (e) => {
+  
+  document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
-
-    watchedState.form.processHandler = 'validating';
-    const formData = new FormData(e.target);
-    const url = formData.get('url');
+    viewState.form.processHandler = 'validating';
+    const url = new FormData(e.target).get('url');
 
     const schema = yup
       .string()
       .url()
-      .notOneOf(watchedState.feeds.map((feed) => feed.url));
-
+      .notOneOf(viewState.feeds.map((feed) => feed.url));
+    const proxyUrl = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`
     schema.validate(url)
+
       .then(() => {
-        watchedState.form.processHandler = 'filling';
-        return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`);
+        viewState.form.processHandler = 'filling';
+        return axios.get(proxyUrl);
       })
       .then((response) => {
         const { feed, posts } = parse(response.data.contents, url);
 
-        const feedId = id();
-        watchedState.feeds.push({ ...feed, id: feedId });
+        const idFeed = id();
+        viewState.feeds.push({ ...feed, id: idFeed });
 
         posts.forEach((post) => {
-          addPostInState(post, feedId);
+          getAddedPost(post, idFeed);
         });
-
-        watchedState.form.processHandler = 'filling';
-        watchedState.form.error = '';
-
-        const callTimeout = () => addNewPosts(url)
-          .finally(() => setTimeout(callTimeout, 5000));
-
-        setTimeout(callTimeout, 5000);
       })
       .catch((fail) => {
         if (fail.message === 'Network Error') {
-          watchedState.form.error = 'networkError';
+          viewState.form.error = 'networkError';
         } else if (fail.message === 'NotValidRss') {
-          watchedState.form.error = 'notValidLink';
+          viewState.form.error = 'notValidLink';
         } else if (fail.message === 'error 404') {
-          watchedState.form.error = 'error404';
+          viewState.form.error = 'error404';
         } else if (fail.message === 'error 405') {
-          watchedState.form.error = 'error405';
+          viewState.form.error = 'error405';
         } else if (fail.message === 'error 406') {
-          watchedState.form.error = 'error406';
+          viewState.form.error = 'error406';
         } else if (fail.message === 'error 500') {
-          watchedState.form.error = 'error500';
+          viewState.form.error = 'error500';
         } else {
-          watchedState.form.error = fail.message;
+          viewState.form.error = fail.message;
         }
-        watchedState.form.processHandler = 'error';
+        viewState.form.processHandler = 'failing';
       });
   });
 };
+
+export default fillContent;
