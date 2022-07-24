@@ -1,17 +1,17 @@
 import * as yup from 'yup';
+import axios from 'axios';
 import watcher from './view.js';
 import parse from './parser.js';
-import axios from 'axios';
 
-let id = (function () {
+const id = (function getId() {
   let num = 0;
-  return function (prefix) {
+  return function getPrefix(prefix) {
     prefix = String(prefix);
     num += 1;
     return prefix + num;
-  }
-}
-  ());
+  };
+}()
+);
 
 const fillContent = () => {
   const state = {
@@ -37,7 +37,7 @@ const fillContent = () => {
   });
 
   const viewState = watcher(state);
-  
+
   const getAddedPost = (post, idFeed) => {
     const idPost = id();
     viewState.posts.push({ ...post, id: idPost, idFeed });
@@ -55,7 +55,6 @@ const fillContent = () => {
 
   getReadedPosts();
 
-  
   document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
     viewState.form.processHandler = 'validating';
@@ -65,7 +64,7 @@ const fillContent = () => {
       .string()
       .url()
       .notOneOf(viewState.feeds.map((feed) => feed.url));
-    const proxyUrl = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`
+    const proxyUrl = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
     schema.validate(url)
 
       .then(() => {

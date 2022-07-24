@@ -25,19 +25,21 @@ const render = (state) => (path, value) => {
   });
 
   switch (path) {
-    case 'form.processHandler':
-      const getProcessHandler = (processHandler, elements, i18nInstance) => {
+    case 'form.processHandler': {
+      const getProcessHandler = (processHandler) => {
         const { addButton, inputField, feedback } = elements;
         switch (processHandler) {
-          case 'validating':
+          case 'validating': {
             addButton.disabled = true;
             inputField.readOnly = true;
             break;
-          case 'failing':
+          }
+          case 'failing': {
             addButton.disabled = false;
             inputField.removeAttribute('readonly');
             break;
-          case 'filling':
+          }
+          case 'filling': {
             addButton.disabled = false;
             inputField.removeAttribute('readonly');
             inputField.classList.remove('is-invalid');
@@ -47,15 +49,17 @@ const render = (state) => (path, value) => {
             elements.inputField.value = '';
             elements.inputField.focus();
             break;
+          }
           default:
             throw new Error(`Unknown state: ${processHandler}`);
         }
       };
       getProcessHandler(value, elements, i18nInstance);
       break;
+    }
 
-    case 'form.error':
-      const getErrorFeedback = (error, elements, i18nInstance) => {
+    case 'form.error': {
+      const getErrorFeedback = (error) => {
         const { inputField, feedback } = elements;
         if (error) {
           inputField.classList.add('is-invalid');
@@ -66,9 +70,10 @@ const render = (state) => (path, value) => {
       };
       getErrorFeedback(value, elements, i18nInstance);
       break;
+    }
 
-    case 'feeds':
-      const getFeeds = (feeds, elements, i18nInstance) => {
+    case 'feeds': {
+      const getFeeds = (feeds) => {
         const { feeds: rootFeeds } = elements;
         rootFeeds.innerHTML = '';
         const cardFeeds = document.createElement('div');
@@ -107,9 +112,10 @@ const render = (state) => (path, value) => {
       getFeeds(value, elements, i18nInstance);
 
       break;
+    }
 
-    case 'posts':
-      const getPosts = (posts, elements, i18nInstance) => {
+    case 'posts': {
+      const getPosts = (posts) => {
         const { posts: rootPosts } = elements;
         rootPosts.innerHTML = '';
 
@@ -129,7 +135,6 @@ const render = (state) => (path, value) => {
         const groupListPosts = document.createElement('ul');
         groupListPosts.classList.add('list-group', 'border-0', 'rounded-0');
         posts.forEach((post) => {
-
           const listItem = document.createElement('li');
           listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
@@ -158,8 +163,9 @@ const render = (state) => (path, value) => {
 
       getPosts(value, elements, i18nInstance);
       break;
+    }
 
-    case 'postsHandler.posts':
+    case 'postsHandler.posts': {
       const getPostsReader = (postsHandler) => {
         postsHandler.forEach((post) => {
           const postItem = document.querySelector(`a[data-id="${post.id}"]`);
@@ -177,9 +183,10 @@ const render = (state) => (path, value) => {
       };
       getPostsReader(value);
       break;
+    }
 
-    case 'postsHandler.readModal':
-      const getPostsReaderModal = (postId, state, elements) => {
+    case 'postsHandler.readModal': {
+      const getPostsReaderModal = (postId) => {
         const { modal } = elements;
         const activePost = state.posts.find((post) => post.id === postId.toString());
 
@@ -190,7 +197,7 @@ const render = (state) => (path, value) => {
 
       getPostsReaderModal(value, state, elements);
       break;
-
+    }
     default:
       throw new Error(`Unknown path: ${path}`);
   }
