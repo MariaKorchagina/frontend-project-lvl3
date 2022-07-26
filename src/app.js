@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import axios from 'axios';
-import watcher from './view.js';
+import view from './view.js';
 import parse from './parser.js';
 
 const id = (function getId() {
@@ -36,14 +36,7 @@ const fillContent = () => {
     },
   });
 
-  const viewState = watcher(state);
-
-  const getAddedPost = (post, idFeed) => {
-    const idPost = id();
-    viewState.posts.push({ ...post, id: idPost, idFeed });
-    viewState.postsHandler.posts.push({ id: idPost, status: 'unread' });
-  };
-
+  const viewState = view(state);
   const getReadedPosts = () => {
     document.querySelector('.posts').addEventListener('click', (event) => {
       const idPost = event.target.dataset;
@@ -54,6 +47,12 @@ const fillContent = () => {
   };
 
   getReadedPosts();
+
+  const getAddedPost = (post, idFeed) => {
+    const idPost = id();
+    viewState.posts.push({ ...post, id: idPost, idFeed });
+    viewState.postsHandler.posts.push({ id: idPost, status: 'unread' });
+  };
 
   document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -66,20 +65,20 @@ const fillContent = () => {
       .notOneOf(viewState.feeds.map((feed) => feed.url));
     const proxyUrl = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
     schema.validate(url)
-
       .then(() => {
         viewState.form.processHandler = 'filling';
         return axios.get(proxyUrl);
       })
       .then((response) => {
         const { feed, posts } = parse(response.data.contents, url);
-
         const idFeed = id();
         viewState.feeds.push({ ...feed, id: idFeed });
-
         posts.forEach((post) => {
           getAddedPost(post, idFeed);
         });
+        const callTimeout = () => getReadedPosts(url)
+          .finally(() => setTimeout(callTimeout, 5000));
+        setTimeout(callTimeout, 5000);
       })
       .catch((fail) => {
         if (fail.message === 'Network Error') {
