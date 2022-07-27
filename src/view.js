@@ -170,12 +170,12 @@ const render = (state) => (path, value) => {
         postsHandler.forEach((post) => {
           const postItem = document.querySelector(`a[data-id="${post.id}"]`);
           switch (post.status) {
-            case 'read':              
+            
+            case 'read':
               postItem.classList.add('fw-normal');
-              postItem.classList.remove('fw-normal');
               break;
             case 'unread':
-              postItem.classList.add('fw-normal');
+              postItem.classList.add('fw-bold');
               break;
             default:
               throw new Error(`Unknown status: ${post.status}`);
