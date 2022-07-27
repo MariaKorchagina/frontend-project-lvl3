@@ -171,7 +171,7 @@ const render = (state) => (path, value) => {
           const postItem = document.querySelector(`a[data-id="${post.id}"]`);
           switch (post.status) {
             case 'read':
-              postItem.classList.add('fw-normal');
+              postItem.classList.add('fw-bold');
               break;
             case 'unread':
               postItem.classList.add('fw-normal');
