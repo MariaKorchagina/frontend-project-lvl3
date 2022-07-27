@@ -76,9 +76,9 @@ const fillContent = () => {
         posts.forEach((post) => {
           getAddedPost(post, idFeed);
         });
-        const callTimeout = () => getReadedPosts(url)
-          .finally(() => setTimeout(callTimeout, 5000));
-        setTimeout(callTimeout, 5000);
+        // const callTimeout = () => getReadedPosts(url)
+        //   .finally(() => setTimeout(callTimeout, 5000));
+        // setTimeout(callTimeout, 5000);
       })
       .catch((fail) => {
         if (fail.message === 'Network Error') {
