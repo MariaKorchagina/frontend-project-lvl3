@@ -170,8 +170,9 @@ const render = (state) => (path, value) => {
         postsHandler.forEach((post) => {
           const postItem = document.querySelector(`a[data-id="${post.id}"]`);
           switch (post.status) {
-            case 'read':
-              postItem.classList.add('fw-bold');
+            case 'read':              
+              postItem.classList.add('fw-normal');
+              postItem.classList.remove('fw-bold');
               break;
             case 'unread':
               postItem.classList.add('fw-bold');
