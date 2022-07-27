@@ -19,7 +19,7 @@ const elements = {
 const render = (state) => (path, value) => {
   const i18nInstance = i18next.createInstance();
   i18nInstance.init({
-    lng: 'en',
+    lng: 'ru',
     debug: true,
     resources,
   });
