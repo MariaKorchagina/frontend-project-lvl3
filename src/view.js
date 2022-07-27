@@ -172,8 +172,8 @@ const render = (state) => (path, value) => {
           switch (post.status) {
             
             case 'read':
-              postItem.classList.remove('fw-bold');
-              postItem.classList.add('font-weight-normal');
+              // postItem.classList.remove('fw-bold');
+              postItem.classList.add('fw-normal');
               break;
             case 'unread':
               postItem.classList.add('fw-bold');
@@ -186,7 +186,7 @@ const render = (state) => (path, value) => {
       getPostsReader(value);
       break;
     }
-
+    
     case 'postsHandler.readModal': {
       const getPostsReaderModal = (postId) => {
         const { modal } = elements;
