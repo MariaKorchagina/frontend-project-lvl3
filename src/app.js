@@ -76,9 +76,6 @@ const fillContent = () => {
         posts.forEach((post) => {
           getAddedPost(post, idFeed);
         });
-        const callTimeout = () => getAddedPost(url)
-          .finally(() => setTimeout(callTimeout, 5000));
-        setTimeout(callTimeout, 5000);
       })
 
       .catch((fail) => {

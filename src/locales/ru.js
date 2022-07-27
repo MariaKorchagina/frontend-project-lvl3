@@ -12,7 +12,7 @@ export default {
     },
     success: 'RSS успешно загружен',
     feeds: 'Фиды',
-    posts: 'Посты',
-    view: 'Просмотр',
+    posts: 'Просмотр',
+    view: 'Посты',
   },
 };
