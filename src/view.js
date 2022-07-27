@@ -172,6 +172,7 @@ const render = (state) => (path, value) => {
           switch (post.status) {
             
             case 'read':
+              postItem.classList.remove('fw-bold');
               postItem.classList.add('fw-normal');
               break;
             case 'unread':
