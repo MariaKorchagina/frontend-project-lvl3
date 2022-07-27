@@ -63,11 +63,11 @@ const fillContent = () => {
       .string()
       .url()
       .notOneOf(viewState.feeds.map((feed) => feed.url));
-    const proxyUrl = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
+
     schema.validate(url)
       .then(() => {
         viewState.form.processHandler = 'filling';
-        return axios.get(proxyUrl);
+        return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`);
       })
       .then((response) => {
         const { feed, posts } = parse(response.data.contents, url);
@@ -76,9 +76,6 @@ const fillContent = () => {
         posts.forEach((post) => {
           getAddedPost(post, idFeed);
         });
-        // const callTimeout = () => getReadedPosts(url)
-        //   .finally(() => setTimeout(callTimeout, 5000));
-        // setTimeout(callTimeout, 5000);
       })
       .catch((fail) => {
         if (fail.message === 'Network Error') {

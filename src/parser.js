@@ -1,31 +1,22 @@
-const parseContent = (xml) => {
+const parseContent = (xml, url) => {
   const data = new DOMParser().parseFromString(xml, 'application/xml');
   if (!data.querySelector('rss')) {
     throw new Error('NotValidRss');
   }
-
   const posts = [];
   data.querySelectorAll('item').forEach((postItem) => {
-    const postUrl = postItem.querySelector('link').textContent;
-    const postTitle = postItem.querySelector('title').textContent;
-    const postDescription = postItem.querySelector('description').textContent;
-
     const post = {
-      url: postUrl,
-      title: postTitle,
-      description: postDescription,
+      url: postItem.querySelector('link').textContent,
+      title: postItem.querySelector('title').textContent,
+      description: postItem.querySelector('description').textContent,
     };
-
     posts.push(post);
   });
-
-  return {
-    feed: {
-      title: data.querySelector('title').textContent,
-      description: data.querySelector('description').textContent,
-    },
-    posts,
+  const feed = {
+    url,
+    title: data.querySelector('channel > title').textContent,
+    description: data.querySelector('channel > description').textContent,
   };
+  return { feed, posts };
 };
-
 export default parseContent;
