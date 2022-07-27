@@ -175,7 +175,7 @@ const render = (state) => (path, value) => {
               postItem.classList.remove('fw-normal');
               break;
             case 'unread':
-              postItem.classList.add('fw-bold');
+              postItem.classList.add('fw-normal');
               break;
             default:
               throw new Error(`Unknown status: ${post.status}`);
