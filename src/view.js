@@ -172,11 +172,11 @@ const render = (state) => (path, value) => {
           switch (post.status) {
             
             case 'read':
-              postItem.classList.remove('font-weight-bold');
+              postItem.classList.remove('fw-bold');
               postItem.classList.add('font-weight-normal');
               break;
             case 'unread':
-              postItem.classList.add('font-weight-bold');
+              postItem.classList.add('fw-bold');
               break;
             default:
               throw new Error(`Unknown status: ${post.status}`);
