@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Webpack App</title>
+</head>
+
+<body>
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-break"></div>
+                <div class="modal-footer">
+                    <a class="btn btn-outline-info full-article" href="#" role="button" target="_blank" rel="noopener noreferrer">Читать ещё</a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="flex-grow-1">
+        <section class="container-fluid bg-secondary bg-gradient p-5">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-white">
+                    <h1 class="display-3 mb-2">RSS аггрегатор</h1>
+                    <p class="lead">Начните читать RSS прямо сейчас!</p>
+                    <form action="" class="rss-form text-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-floating">
+                                    <input id="url-input" autofocus="" required="" name="url" aria-label="url"
+                                        class="form-control w-100" placeholder="RSS Link" autocomplete="off">
+                                    <label for="url-input">RSS Link</label>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" aria-label="add"
+                                    class="h-100 btn btn-lg btn-outline-info px-sm-5">Добавить</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="mt-2 mb-0 mx-auto text-white fs-5 lead">Пример: https://ru.hexlet.io/lessons.rss, https://www.nasa.gov/rss/dyn/educationnews.rss</p>
+                    <p class="feedback m-0 position-absolute small text-danger"></p>
+                </div>
+            </div>
+        </section>
+        <section class="container-fluid container-xxl p-5">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 order-1 mx-auto posts"></div>
+                <div class="col-md-10 col-lg-4 mx-auto order-0 order-lg-1 feeds"></div>
+            </div>
+        </section>
+    </main>
+    <script src="index.js"></script>
+</body>
+</html>
