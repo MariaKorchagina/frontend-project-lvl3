@@ -39,9 +39,10 @@ const fillContent = () => {
   const viewState = view(state);
   const getReadedPosts = () => {
     document.querySelector('.posts').addEventListener('click', (event) => {
-      const idPost = event.target.dataset;
-      if (idPost.bsToggle === 'modal') {
-        viewState.postsHandler.readModal = idPost.id;
+      const idPost = event.target.dataset.id;
+      viewState.postsHandler.posts = viewState.postsHandler.posts.map((post) => (post.id === idPost ? { id: idPost, status: 'read' } : post));
+      if (event.target.dataset.bsToggle === 'modal') {
+        viewState.postsHandler.readModal = idPost;
       }
     });
   };
@@ -100,6 +101,3 @@ const fillContent = () => {
 };
 
 export default fillContent;
-
-
-
