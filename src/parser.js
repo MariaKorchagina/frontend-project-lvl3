@@ -1,7 +1,7 @@
 const parseContent = (xml, url) => {
   const data = new DOMParser().parseFromString(xml, 'application/xml');
   if (!data.querySelector('rss')) {
-    throw new Error('NotValidRss');
+    throw new Error('notValidLink');
   }
   const posts = [];
   data.querySelectorAll('item').forEach((postItem) => {
