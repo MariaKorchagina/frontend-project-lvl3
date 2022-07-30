@@ -3,7 +3,7 @@ export default {
     errors: {
       notValidUrl: 'Link has not a valid URL. Please try again.',
       sameUrl: 'RSS request already exists',
-      'NotValidRss': 'RSS does not contain a valid link. Please try again.',
+      NotValidRss: 'RSS does not contain a valid link. Please try again.',
       'Network Error': 'Network Error. Please try again.',
       'error 404': 'Error 404: Page not found. Please try again.',
       'error 405': 'Error 405: Method Not Allowed. Please try again.',
