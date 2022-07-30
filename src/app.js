@@ -1,28 +1,19 @@
 import * as yup from 'yup';
 import axios from 'axios';
+import _ from 'lodash';
 import view from './view.js';
 import parse from './parser.js';
-
-const id = (function getId() {
-  let num = 0;
-  return function getPrefix(prefix) {
-    prefix = String(prefix);
-    num += 1;
-    return prefix + num;
-  };
-}()
-);
 
 const fillContent = () => {
   const state = {
     form: {
       error: '',
-      processHandler: 'filling',
+      formState: 'filling',
     },
     feeds: [],
     posts: [],
-    postsHandler: {
-      posts: [],
+    uiState: {
+      readedPosts: [],
       readModal: '',
     },
   };
@@ -33,69 +24,52 @@ const fillContent = () => {
     },
     string: {
       url: 'notValidUrl',
+      url: 'notValidLink',
     },
   });
 
   const viewState = view(state);
-  const getReadedPosts = () => {
-    document.querySelector('.posts').addEventListener('click', (event) => {
-      const idPost = event.target.dataset.id;
-      viewState.postsHandler.posts = viewState.postsHandler.posts.map((post) => (post.id === idPost ? { id: idPost, status: 'read' } : post));
-      if (event.target.dataset.bsToggle === 'modal') {
-        viewState.postsHandler.readModal = idPost;
-      }
-    });
-  };
 
-  getReadedPosts();
+  document.querySelector('.posts').addEventListener('click', (event) => {
+    const idPost = event.target.dataset.id;
+    viewState.uiState.readedPosts = viewState.uiState.readedPosts.map((post) => (post.id === idPost ? { id: idPost, status: 'read' } : post));
+    if (event.target.dataset.bsToggle === 'modal') {
+      viewState.uiState.readModal = idPost;
+    }
+  });
 
-  const getAddedPost = (post, idFeed) => {
-    const idPost = id();
+  const proxyUrl = (url) => `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
+
+  const setAddedPost = (post, idFeed) => {
+    const idPost = _.uniqueId();
     viewState.posts.push({ ...post, id: idPost, idFeed });
-    viewState.postsHandler.posts.push({ id: idPost, status: 'unread' });
+    viewState.uiState.readedPosts.push({ id: idPost, status: 'unread' });
   };
 
   document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
-    viewState.form.processHandler = 'validating';
+    viewState.form.formState = 'validating';
     const url = new FormData(e.target).get('url');
-
-    const schema = yup
-      .string()
-      .url()
-      .notOneOf(viewState.feeds.map((feed) => feed.url));
-
+    const schema = yup.string().url().notOneOf(viewState.feeds.map((feed) => feed.url));
     schema.validate(url)
+
       .then(() => {
-        viewState.form.processHandler = 'filling';
-        return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`);
+        viewState.form.formState = 'filling';
+        return axios.get(proxyUrl(url));
       })
+
       .then((response) => {
         const { feed, posts } = parse(response.data.contents, url);
-        const idFeed = id();
+        const idFeed = _.uniqueId();
         viewState.feeds.push({ ...feed, id: idFeed });
         posts.forEach((post) => {
-          getAddedPost(post, idFeed);
+          setAddedPost(post, idFeed);
         });
       })
 
       .catch((fail) => {
-        if (fail.message === 'Network Error') {
-          viewState.form.error = 'networkError';
-        } else if (fail.message === 'NotValidRss') {
-          viewState.form.error = 'notValidLink';
-        } else if (fail.message === 'error 404') {
-          viewState.form.error = 'error404';
-        } else if (fail.message === 'error 405') {
-          viewState.form.error = 'error405';
-        } else if (fail.message === 'error 406') {
-          viewState.form.error = 'error406';
-        } else if (fail.message === 'error 500') {
-          viewState.form.error = 'error500';
-        } else {
-          viewState.form.error = fail.message;
-        }
-        viewState.form.processHandler = 'failing';
+        viewState.form.error = fail.message;
+        viewState.form.formState = 'failing';
       });
   });
 };
