@@ -24,7 +24,6 @@ const fillContent = () => {
     },
     string: {
       url: 'notValidUrl',
-      url: 'notValidLink',
     },
   });
 
@@ -68,7 +67,13 @@ const fillContent = () => {
       })
 
       .catch((fail) => {
-        viewState.form.error = fail.message;
+        if (fail.message === 'Network Error') {
+          viewState.form.error = 'networkError';
+        } else if (fail.message === 'NotValidRss') {
+          viewState.form.error = 'notValidLink';
+        } else {
+          viewState.form.error = fail.message;
+        }
         viewState.form.formState = 'failing';
       });
   });
