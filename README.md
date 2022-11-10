@@ -6,12 +6,6 @@ This project has been created using **webpack-cli**, you can now run
 npm run build
 ```
 
-or
-
-```
-yarn build
-```
-
 to bundle your application
 
 
@@ -26,4 +20,4 @@ to bundle your application
 
 RSS Reader is a service for aggregating RSS feeds for automatically collecting messages from sources that export to RSS, such as news headlines, blogs, podcasts, and video hosting sites and etc.
 
-[Try it now!](https://frontend-project-lvl3-lime-five.vercel.app/)
+[Try it now!](https://frontend-project-lvl3-six-beta.vercel.app/)
